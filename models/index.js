@@ -1,8 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize('mocho', 'mocho', 'mocho', {
-  host: 'localhost',
+const sequelize = new Sequelize('bmrutzjnp', 'uxenwya5kwdbxgyq', '0v6OXlSHJ79HDT5gjQk', {
+  host: 'bmrutzjnp-mysql.services.clever-cloud.com',
   dialect: 'mysql',
   pool: {
     max: 5,
