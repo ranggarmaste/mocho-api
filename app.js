@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api', router)
 
 models.sequelize.sync().then(() => {
-  app.listen(3000, () => {
+  app.listen(8080, () => {
     console.log('Server is on.')
   })
 })
