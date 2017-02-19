@@ -1,12 +1,17 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+const router = require('./routes')
+const models = require('./models')
 
-require('./db')
+// require('./db')
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!')
-})
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use('/api', router)
 
-app.listen(3000, () => {
-  console.log('Server is on.')
+models.sequelize.sync().then(() => {
+  app.listen(3000, () => {
+    console.log('Server is on.')
+  })
 })
