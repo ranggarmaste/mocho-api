@@ -1,12 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
   const OwnedMonster = sequelize.define('OwnedMonster', {
     name: DataTypes.STRING,
-    statusPoint: DataTypes.INTEGER,
+    // Added status
     addedAtk: DataTypes.INTEGER,
     addedDef: DataTypes.INTEGER,
-    addedLuk: DataTypes.INTEGER,
+    addedRec: DataTypes.INTEGER,
+    addedHP: DataTypes.INTEGER,
+    addedSP: DataTypes.INTEGER,
     exp: DataTypes.INTEGER,
-    level: DataTypes.INTEGER
+    hunger: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: (models) => {

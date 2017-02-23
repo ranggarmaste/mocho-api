@@ -44,7 +44,19 @@ module.exports = (router) => {
   })
 
   router.get('/users', (req, res) => {
-    console.log('GET: Hello, World!')
-    res.send('GET: Hello, World!')
+    User.findAll().then((data) => {
+      res.json(data)
+    })
+  })
+
+  router.get('/users/:username', (req, res) => {
+    let username = req.params.username
+    User.findOne({
+      where: {
+        username: username
+      }
+    }).then((user) => {
+      res.json(user)
+    })
   })
 }
