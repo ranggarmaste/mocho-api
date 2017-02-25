@@ -31,14 +31,14 @@ module.exports = (router) => {
       where: {
         username: username
       }
-    }).then((user) => {
-      if (!user) {
-        User.create({username: username, deviceKey: key})
+    }).then((user_key) => {
+      if (!user_key) {
+        UserKey.create({username: username, deviceKey: key})
         .then(() => {
           res.json({status: "OK"})
         })
       } else {
-        user.update({username: username, deviceKey: key})
+        user_key.update({username: username, deviceKey: key})
         .then(() => {
           res.json({status: "OK"})
         })
