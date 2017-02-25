@@ -9,7 +9,7 @@ module.exports = (router) => {
       res.json(userKeys)
     })
   })
-  
+
   router.delete('/user_keys/:username', (req, res) => {
     let username = req.params.username
     UserKey.findOne({
@@ -33,12 +33,12 @@ module.exports = (router) => {
       }
     }).then((user) => {
       if (!user) {
-        User.create({username: username, key: key})
+        User.create({username: username, deviceKey: key})
         .then(() => {
           res.json({status: "OK"})
         })
       } else {
-        user.update({username: username, key: key})
+        user.update({username: username, deviceKey: key})
         .then(() => {
           res.json({status: "OK"})
         })
