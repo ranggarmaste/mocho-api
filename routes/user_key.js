@@ -3,6 +3,13 @@ const UserKey = models.UserKey
 const SERVER_KEY = 'AAAAUrsJw7w:APA91bEYw63CLTOAZs6nneenW3iS2TxVhEgLRAhDhK9u5LUC1J-kG7dk7j-l0mC4dOpgiNtPasSJFsTrs2kMdhAK6nNrNAicDHhenb-gt81yto-wFculDTS2UQw9iwTAE9XU-PNXoK6w'
 
 module.exports = (router) => {
+  router.get('/user_keys', (req, res) => {
+    UserKey.findAll()
+    .then((userKeys) => {
+      res.json(userKeys)
+    })
+  })
+  
   router.delete('/user_keys/:username', (req, res) => {
     let username = req.params.username
     UserKey.findOne({
@@ -10,7 +17,8 @@ module.exports = (router) => {
         username: username
       }
     }).then((user) => {
-      return user.destroy()
+      if (user)
+        return user.destroy()
     }).then(() => {
       res.json({status: "OK"})
     })
