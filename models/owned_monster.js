@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     addedHP: DataTypes.INTEGER,
     addedSP: DataTypes.INTEGER,
     exp: DataTypes.INTEGER,
-    hunger: DataTypes.INTEGER
+    hunger: DataTypes.INTEGER,
+    subtype: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: (models) => {

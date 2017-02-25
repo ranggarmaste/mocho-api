@@ -6,8 +6,8 @@ function createUpdatedFields(body) {
   let updatedFields = {}
   let fields = ['addedAtk', 'addedDef', 'addedRec', 'addedHP', 'addedSP', 'exp', 'hunger']
   for (let i = 0; i < fields.length; i++) {
-    if (req.body[fields[i]]) {
-      updatedFields[fields[i]] = req.body[fields[i]]
+    if (body[fields[i]]) {
+      updatedFields[fields[i]] = body[fields[i]]
     }
   }
   return updatedFields
