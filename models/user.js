@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: (models) => {
         User.hasMany(models.OwnedMonster)
+        User.hasMany(models.OwnedFood)
       }
     }
   })

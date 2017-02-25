@@ -6,8 +6,18 @@ const models = require('../models')
 const User = models.User
 const OwnedMonster = models.OwnedMonster
 const Monster = models.Monster
+const Food = models.Food
+const OwnedFood = models.OwnedFood
 
 module.exports = (router) => {
+  router.get('/seed/user', (req, res) => {
+    User.create({
+      email: 'ranggarmaste@gmail.com',
+      username: 'ranggarmaste',
+      searchChance: 0
+    })
+  })
+  
   router.get('/seed/:filename', (req, res) => {
     let filename = req.params.filename + ".txt"
     importFromFile(filename)
@@ -29,8 +39,12 @@ function importFromFile(filename) {
       fields = line.split(" ")
       if (filename == "monsters.txt") {
         createMonster(fields)
-      } else {
+      } else if (filename == "owned_monsters.txt") {
         createOwnedMonster(fields)
+      } else if (filename == "foods.txt") {
+        createFood(fields)
+      } else { // owned_foods.txt
+        createOwnedFood(fields)
       }
     }
   })
@@ -73,6 +87,34 @@ function createOwnedMonster(fields) {
     })
     ownedMonster.setUser(user)
     ownedMonster.save().then(() => {
+      console.log('Hore')
+    })
+  })
+}
+
+function createFood(fields) {
+  let food = Food.build({
+    name: fields[0],
+    type: fields[1],
+    amount: parseInt(fields[2])
+  })
+  food.save().then(() => {
+    console.log('Hore')
+  })
+}
+
+function createOwnedFood(fields) {
+  User.findOne({
+    where: {
+      username: 'ranggarmaste'
+    }
+  }).then((user) => {
+    let ownedFood = OwnedFood.build({
+      name: fields[0],
+      quantity: parseInt(fields[1])
+    })
+    ownedFood.setUser(user)
+    ownedFood.save().then(() => {
       console.log('Hore')
     })
   })
