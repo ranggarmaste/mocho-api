@@ -4,7 +4,7 @@ const OwnedMonster = models.OwnedMonster
 
 function createUpdatedFields(body) {
   let updatedFields = {}
-  let fields = ['addedAtk', 'addedDef', 'addedRec', 'addedHP', 'addedSP', 'exp', 'hunger']
+  let fields = ['addedAtk', 'addedDef', 'addedRec', 'addedHP', 'addedSP', 'exp', 'hunger', 'subtype']
   for (let i = 0; i < fields.length; i++) {
     if (body[fields[i]]) {
       updatedFields[fields[i]] = body[fields[i]]
