@@ -13,6 +13,28 @@ function fetchUsers(email, username) {
 }
 
 module.exports = (router) => {
+  router.post('/login', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    return User.findOne({
+      where: {
+        email: email,
+        password: password
+      }
+    }).then((user) => {
+      if (user != null) {
+        res.json({
+          username: user.username
+        })
+      } else {
+        res.json({
+          error: "ERROR"
+        })
+      }
+    })
+  })
+
   router.post('/users', (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
