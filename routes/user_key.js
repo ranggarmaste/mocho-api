@@ -46,6 +46,20 @@ module.exports = (router) => {
     })
   })
 
+  router.get('/user_keys/:username/win', (req, res) => {
+    let exp = req.params.exp
+    let username = req.params.username
+    UserKey.findOne({
+      where: {
+        username: username
+      }
+    }).then((user) => {
+      let key = user.deviceKey
+      sendMessageToUser(key, 100)
+      res.json({status: "OK"})
+    })
+  })
+
   router.get('/user_keys/:username/found', (req, res) => {
     let exp = req.params.exp
     let username = req.params.username
@@ -62,6 +76,15 @@ module.exports = (router) => {
 }
 
 function sendMessageToUser(deviceId, exp) {
+  let title = ""
+  let body = ""
+  if (exp == 100) {
+    title = "You Win!"
+    body = "Your monster just won a battle!"
+  } else {
+    title = "New monster"
+    body = "You just found a new monster"
+  }
   request({
     url: 'https://fcm.googleapis.com/fcm/send',
     method: 'POST',
@@ -72,8 +95,8 @@ function sendMessageToUser(deviceId, exp) {
     body: JSON.stringify(
       {
         "notification": {
-          "title": "New monster",
-          "body": "You just found a new monster!"
+          "title": title,
+          "body": body
         },
         "data": {
           "exp": exp,
