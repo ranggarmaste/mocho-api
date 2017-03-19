@@ -36,4 +36,15 @@ module.exports = (router) => {
       })
     })
   })
+
+  router.get('/users/:username/monsters/:id/exp', (req, res) => {
+    let username = req.params.username
+    let id = req.params.id
+    OwnedMonster.findById(id).then((ownedMonster) => {
+      ownedMonster.exp += 100;
+      ownedMonster.save().then(() => {
+        res.json({ status: 'OK'})
+      })
+    })
+  })
 }

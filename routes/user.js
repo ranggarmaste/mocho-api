@@ -16,7 +16,7 @@ module.exports = (router) => {
   router.post('/login', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-
+    console.log(req.body);
     return User.findOne({
       where: {
         email: email,
