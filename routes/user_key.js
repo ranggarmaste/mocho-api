@@ -1,5 +1,6 @@
 const models = require('../models')
 const UserKey = models.UserKey
+const User = models.User
 const request = require('request')
 
 module.exports = (router) => {
@@ -63,14 +64,23 @@ module.exports = (router) => {
   router.get('/user_keys/:username/found/:monster', (req, res) => {
     let monster = req.params.monster
     let username = req.params.username
-    UserKey.findOne({
-      where: {
-        username: username
-      }
+    User.findOne({
+      where: { username: username }
     }).then((user) => {
-      let key = user.deviceKey
-      sendMessageToUser(key, monster)
-      res.json({status: "OK"})
+      user.searchChance -= 1
+      user.save().then(() => {
+        if (monster !== 'none') {
+          UserKey.findOne({
+            where: { username: username }
+          }).then((user_key) => {
+            let key = user_key.deviceKey
+            sendMessageToUser(key, monster)
+            res.json({searchChance: user.searchChance})
+          })
+        } else {
+          res.json({searchChance: user.searchChance})
+        }
+      })
     })
   })
 }
