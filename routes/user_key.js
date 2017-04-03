@@ -99,7 +99,7 @@ function sendMessageToUser(deviceId, data) {
           "body": body
         },
         "data": {
-          "exp": exp,
+          "data": data,
         },
         "to" : deviceId
       }
