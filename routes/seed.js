@@ -113,12 +113,14 @@ function createOwnedFood(fields) {
       username: 'ranggarmaste'
     }
   }).then((user) => {
-    let ownedFood = OwnedFood.build({
-      name: fields[0],
-      quantity: parseInt(fields[1])
-    })
-    ownedFood.save().then(() => {
-      ownedFood.setUser(user)
+    Food.findById(fields[0]).then((food) => {
+      let ownedFood = OwnedFood.build({
+        quantity: parseInt(fields[1])
+      })
+      ownedFood.save().then(() => {
+        ownedFood.setUser(user)
+        ownedFood.setFood(food)
+      })
     })
   })
 }
