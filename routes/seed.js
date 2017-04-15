@@ -17,7 +17,7 @@ module.exports = (router) => {
       searchChance: 0
     })
   })
-  
+
   router.get('/seed/:filename', (req, res) => {
     let filename = req.params.filename + ".txt"
     importFromFile(filename)
@@ -75,19 +75,21 @@ function createOwnedMonster(fields) {
       username: 'ranggarmaste'
     }
   }).then((user) => {
-    let ownedMonster = OwnedMonster.build({
-      name: fields[0],
-      addedAtk: fields[1],
-      addedDef: fields[2],
-      addedRec: fields[3],
-      addedHP: fields[4],
-      addedSP: fields[5],
-      exp: fields[6],
-      hunger: fields[7],
-    })
-    ownedMonster.setUser(user)
-    ownedMonster.save().then(() => {
-      console.log('Hore')
+    Monster.findById(fields[0]).then((monster) => {
+      let ownedMonster = OwnedMonster.build({
+        name: fields[1],
+        addedAtk: fields[2],
+        addedDef: fields[3],
+        addedRec: fields[4],
+        addedHP: fields[5],
+        addedSP: fields[6],
+        exp: fields[7],
+        hunger: fields[8],
+      })
+      ownedMonster.save().then(() => {
+        ownedMonster.setUser(user)
+        ownedMonster.setMonster(monster)
+      })
     })
   })
 }
@@ -99,7 +101,7 @@ function createFood(fields) {
     amount: parseInt(fields[2])
   })
   food.save().then(() => {
-    console.log('Hore')
+    console.log('Food saved')
   })
 }
 
@@ -113,9 +115,8 @@ function createOwnedFood(fields) {
       name: fields[0],
       quantity: parseInt(fields[1])
     })
-    ownedFood.setUser(user)
     ownedFood.save().then(() => {
-      console.log('Hore')
+      ownedFood.setUser(user)
     })
   })
 }

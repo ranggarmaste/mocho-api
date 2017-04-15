@@ -1,8 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize('bmrutzjnp', 'uxenwya5kwdbxgyq', '0v6OXlSHJ79HDT5gjQk', {
-  host: 'bmrutzjnp-mysql.services.clever-cloud.com',
+
+const sequelize = new Sequelize(process.env.MYSQL_ADDON_DB, process.env.MYSQL_ADDON_USER, process.env.MYSQL_ADDON_PASSWORD, {
+  host: process.env.MYSQL_ADDON_HOST,
   dialect: 'mysql',
   pool: {
     max: 5,
