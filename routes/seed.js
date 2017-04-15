@@ -15,6 +15,8 @@ module.exports = (router) => {
       email: 'ranggarmaste@gmail.com',
       username: 'ranggarmaste',
       searchChance: 0
+    }).then(() => {
+      res.json({status: 'OK'})
     })
   })
 
