@@ -14,7 +14,8 @@ module.exports = (router) => {
     User.create({
       email: 'ranggarmaste@gmail.com',
       username: 'ranggarmaste',
-      searchChance: 0
+      password: 'sumiatun',
+      searchChance: 20
     }).then(() => {
       res.json({status: 'OK'})
     })
@@ -87,6 +88,7 @@ function createOwnedMonster(fields) {
         addedSP: fields[6],
         exp: fields[7],
         hunger: fields[8],
+        subtype: fields[9]
       })
       ownedMonster.save().then(() => {
         ownedMonster.setUser(user)
