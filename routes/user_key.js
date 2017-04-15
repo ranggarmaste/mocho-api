@@ -1,6 +1,8 @@
 const models = require('../models')
 const UserKey = models.UserKey
 const User = models.User
+const Monster = models.Monster
+const OwnedMonster = models.OwnedMonster
 const request = require('request')
 
 module.exports = (router) => {
@@ -61,21 +63,39 @@ module.exports = (router) => {
     })
   })
 
-  router.get('/user_keys/:username/found/:monster', (req, res) => {
-    let monster = req.params.monster
+  router.get('/user_keys/:username/found/:monster_id', (req, res) => {
+    let monster_id = parseInt(req.params.monster_id)
     let username = req.params.username
     User.findOne({
       where: { username: username }
     }).then((user) => {
       user.searchChance -= 1
       user.save().then(() => {
-        if (monster !== 'none') {
-          UserKey.findOne({
-            where: { username: username }
-          }).then((user_key) => {
-            let key = user_key.deviceKey
-            sendMessageToUser(key, monster)
-            res.json({searchChance: user.searchChance})
+        if (monster_id !== -1) {
+          Monster.findById(monster_id)
+          .then((monster) => {
+            let ownedMonster = OwnedMonster.build({
+              name: monster.defaultName,
+              addedAtk: 0,
+              addedDef: 0,
+              addedRec: 0,
+              addedHP: 0,
+              addedSP: 0,
+              exp: 100,
+              hunger: 0,
+              subtype: 0
+            })
+            ownedMonster.save().then(() => {
+              ownedMonster.setUser(user)
+              ownedMonster.setMonster(monster)
+              UserKey.findOne({
+                where: { username: username }
+              }).then((user_key) => {
+                let key = user_key.deviceKey
+                sendMessageToUser(key, monster.name)
+                res.json({searchChance: user.searchChance})
+              })
+            })
           })
         } else {
           res.json({searchChance: user.searchChance})
