@@ -1,6 +1,7 @@
 const models = require('../models')
 const User = models.User
 const OwnedMonster = models.OwnedMonster
+const Monster = models.Monster
 
 function createUpdatedFields(body) {
   let updatedFields = {}
@@ -17,10 +18,13 @@ module.exports = (router) => {
   router.get('/users/:username/monsters', (req, res) => {
     let username = req.params.username
     User.findOne({
-      include: [models.OwnedMonster],
-      where: {
-        username: username
-      }
+      include: [
+        {
+          model: OwnedMonster,
+          include: [Monster]
+        }
+      ],
+      where: { username: username }
     }).then((user) => {
       res.json(user)
     })
