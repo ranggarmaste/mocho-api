@@ -45,7 +45,7 @@ module.exports = (router) => {
     let username = req.params.username
     let id = req.params.id
     OwnedMonster.findById(id).then((ownedMonster) => {
-      ownedMonster.exp += 100;
+      ownedMonster.exp += 50;
       ownedMonster.save().then(() => {
         res.json({ status: 'OK'})
       })
