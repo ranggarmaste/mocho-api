@@ -83,4 +83,15 @@ module.exports = (router) => {
       })
     })
   })
+
+  router.get('/users/:username/monsters/:id/lose', (req, res) => {
+    let username = req.params.username
+    let id = req.params.id
+    OwnedMonster.findById(id).then((ownedMonster) => {
+      ownedMonster.hunger -= 10;
+      ownedMonster.save().then(() => {
+        res.json({ status: 'OK'})
+      })
+    })
+  })
 }
