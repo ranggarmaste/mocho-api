@@ -1,7 +1,9 @@
 const models = require('../models')
 const User = models.User
-const OwnedMonster = models.OwnedMonster
 const Monster = models.Monster
+const OwnedMonster = models.OwnedMonster
+const Food = models.Food
+const OwnedFood = models.OwnedFood
 
 function createUpdatedFields(body) {
   let updatedFields = {}
@@ -30,6 +32,35 @@ module.exports = (router) => {
     })
   })
 
+  router.post('/users/:username/monsters/:monsterId/food', (req, res) => {
+    let username = req.params.username
+    let monsterId = parseInt(req.params.monsterId)
+    let rice = parseInt(req.body.rice)
+    let meat = parseInt(req.body.meat)
+    let hunger = parseInt(req.body.hunger)
+
+    User.findOne({
+      include: [OwnedFood],
+      where: { username: username }
+    }).then((user) => {
+      ownedFoods = user.OwnedFoods
+      for (let i = 0; i < ownedFoods.length; i++) {
+        if (ownedFoods[i].FoodId === 1) {
+          ownedFoods[i].quantity = meat;
+        } else if (ownedFoods[i].FoodId === 2) {
+          ownedFoods[i].quantity = rice;
+        }
+        ownedFoods[i].save();
+      }
+      OwnedMonster.findById(monsterId).then((ownedMonster) => {
+        ownedMonster.hunger = hunger;
+        ownedMonster.save().then(() => {
+          res.json({ status: 'OK' })
+        })
+      })
+    })
+  })
+
   router.put('/users/:username/monsters/:id', (req, res) => {
     let username = req.params.username
     let id = req.params.id
@@ -46,6 +77,7 @@ module.exports = (router) => {
     let id = req.params.id
     OwnedMonster.findById(id).then((ownedMonster) => {
       ownedMonster.exp += 50;
+      ownedMonster.hunger -= 10;
       ownedMonster.save().then(() => {
         res.json({ status: 'OK'})
       })
