@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     username: DataTypes.STRING,
     password: DataTypes.STRING,
-    searchChance: DataTypes.INTEGER
+    searchChance: DataTypes.INTEGER,
+    money: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: (models) => {
