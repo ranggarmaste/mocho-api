@@ -38,24 +38,28 @@ module.exports = (router) => {
     let rice = parseInt(req.body.rice)
     let meat = parseInt(req.body.meat)
     let hunger = parseInt(req.body.hunger)
+    let money = parseInt(req.body.money)
 
     User.findOne({
       include: [OwnedFood],
       where: { username: username }
     }).then((user) => {
-      ownedFoods = user.OwnedFoods
-      for (let i = 0; i < ownedFoods.length; i++) {
-        if (ownedFoods[i].FoodId === 1) {
-          ownedFoods[i].quantity = meat;
-        } else if (ownedFoods[i].FoodId === 2) {
-          ownedFoods[i].quantity = rice;
+      user.money = money
+      user.save().then(() => {
+        ownedFoods = user.OwnedFoods
+        for (let i = 0; i < ownedFoods.length; i++) {
+          if (ownedFoods[i].FoodId === 1) {
+            ownedFoods[i].quantity = meat;
+          } else if (ownedFoods[i].FoodId === 2) {
+            ownedFoods[i].quantity = rice;
+          }
+          ownedFoods[i].save();
         }
-        ownedFoods[i].save();
-      }
-      OwnedMonster.findById(monsterId).then((ownedMonster) => {
-        ownedMonster.hunger = hunger;
-        ownedMonster.save().then(() => {
-          res.json({ status: 'OK' })
+        OwnedMonster.findById(monsterId).then((ownedMonster) => {
+          ownedMonster.hunger = hunger;
+          ownedMonster.save().then(() => {
+            res.json({ status: 'OK' })
+          })
         })
       })
     })
@@ -79,7 +83,14 @@ module.exports = (router) => {
       ownedMonster.exp += 50;
       ownedMonster.hunger -= 10;
       ownedMonster.save().then(() => {
-        res.json({ status: 'OK'})
+        User.findOne({
+          where: { username: username }
+        }).then((user) => {
+          user.money += 150
+          user.save().then(() => {
+            res.json({ status: 'OK'})
+          })
+        })
       })
     })
   })
